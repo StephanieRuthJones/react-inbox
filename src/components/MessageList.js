@@ -4,7 +4,11 @@ import '../App.css'
 
 let MessageList = (props) => {
     return (
-        <Message />
+
+        props.messages.map(message => {
+            return <Message></Message>
+
+        })
     )
 }
 
