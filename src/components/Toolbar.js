@@ -4,7 +4,7 @@ import '../App.css';
 class Toolbar extends Component {
     render() {
         return (
-            <div classNameName="row toolbar">
+            <div className="row toolbar">
                 <div className="col-md-12">
                     <p className="pull-right">
                         <span className="badge badge">2</span>
