@@ -54,9 +54,10 @@ class App extends Component {
   selectAllButton = () => {
     console.log('clicked')
     const allMessagesSelected = this.state.messages.map(message => {
-      //if selected = true, skip/keep selected true; if not, give true value to selected
+      message.selected = true
+      return message
     })
-    //map through messages to see what status is
+    this.setState({ messages: allMessagesSelected })
   }
 
   render() {
