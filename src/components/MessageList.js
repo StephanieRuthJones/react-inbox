@@ -10,7 +10,8 @@ const MessageList = (props) => {
                 key={idx}
                 message={message}
                 messageRead={props.messageRead}
-                messageSelected={props.messageSelected} />
+                messageSelected={props.messageSelected}
+                messageStarred={props.messageStarred} />
 
         )
     )

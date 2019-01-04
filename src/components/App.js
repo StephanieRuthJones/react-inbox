@@ -43,13 +43,13 @@ class App extends Component {
     this.setState({ messages: selectedMessages })
   }
 
-  // messageStarred = (id) => {
-  //   const starredMessages = this.state.messages.map(message => {
-  //     if (message.id === id) message.selected = !message.selected
-  //     return message
-  //   })
-  //   this.setState({ messages: readMessages })
-  // }
+  messageStarred = (id) => {
+    const starredMessages = this.state.messages.map(message => {
+      if (message.id === id) message.starred = !message.starred
+      return message
+    })
+    this.setState({ messages: starredMessages })
+  }
 
   render() {
     console.log(this.state.messages)
@@ -60,13 +60,10 @@ class App extends Component {
           messages={this.state.messages}
           messageRead={this.messageRead}
           messageSelected={this.messageSelected}
-        >
-        </MessageList>
+          messageStarred={this.messageStarred} />
       </div>
     );
   }
 }
 
 export default App;
-
-

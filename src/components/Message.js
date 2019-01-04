@@ -25,7 +25,8 @@ const Message = (props) => {
                         <i className={`star fa 
                             ${props.message.starred
                                 ? "fa-star"
-                                : "fa-star-o"}`}></i>
+                                : "fa-star-o"}`}
+                            onClick={() => props.messageStarred(props.message.id)}></i>
                     </div>
                 </div>
             </div>
