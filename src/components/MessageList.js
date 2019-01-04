@@ -2,11 +2,15 @@ import React from 'react'
 import Message from './Message'
 import '../App.css'
 
-let MessageList = (props) => {
+const MessageList = (props) => {
     return (
 
-        props.messages.map(message =>
-            <Message message={message} />
+        props.messages.map((message, idx) =>
+            <Message
+                key={idx}
+                message={message}
+                messageRead={props.messageRead}
+                messageSelected={props.messageSelected} />
 
         )
     )
