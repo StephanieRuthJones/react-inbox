@@ -51,11 +51,20 @@ class App extends Component {
     this.setState({ messages: starredMessages })
   }
 
+  selectAllButton = () => {
+    console.log('clicked')
+    const allMessagesSelected = this.state.messages.map(message => {
+      //if selected = true, skip/keep selected true; if not, give true value to selected
+    })
+    //map through messages to see what status is
+  }
+
   render() {
     console.log(this.state.messages)
     return (
       <div className="container">
-        <Toolbar />
+        <Toolbar
+          selectAllButton={this.selectAllButton} />
         <MessageList
           messages={this.state.messages}
           messageRead={this.messageRead}

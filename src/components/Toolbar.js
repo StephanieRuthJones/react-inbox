@@ -12,7 +12,9 @@ class Toolbar extends Component {
                     </p>
 
                     <button className="btn btn-default">
-                        <i className={true ? "fa fa-check-square-o" : "fa fa-minus-square-o"} ></i>
+                        <i
+                            className={true ? "fa fa-check-square-o" : "fa fa-minus-square-o"}
+                            onClick={this.props.selectAllButton} ></i>
                     </button>
 
                     <button className="btn btn-default">
