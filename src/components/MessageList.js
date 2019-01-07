@@ -11,7 +11,8 @@ const MessageList = (props) => {
                 message={message}
                 messageRead={props.messageRead}
                 messageSelected={props.messageSelected}
-                messageStarred={props.messageStarred} />
+                messageStarred={props.messageStarred}
+                deleteMessage={props.deleteMessage} />
 
         )
     )

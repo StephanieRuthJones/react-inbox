@@ -44,7 +44,9 @@ class Toolbar extends Component {
                     </select>
 
                     <button className="btn btn-default">
-                        <i className="fa fa-trash-o"></i>
+                        <i
+                            className="fa fa-trash-o"
+                            onClick={this.props.deleteMessage}></i>
                     </button>
                 </div>
             </div>

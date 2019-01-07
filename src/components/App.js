@@ -67,14 +67,6 @@ class App extends Component {
     })
   }
 
-  messageStarred = async (id) => {
-    const starredMessages = this.state.messages.map(message => {
-      if (message.id === id) message.starred = !message.starred
-      return message
-    })
-    this.setState({ messages: starredMessages })
-  }
-
   selectAllButton = () => {
     console.log('clicked')
     const allMessagesSelected = this.state.messages.map(message => {
@@ -84,20 +76,38 @@ class App extends Component {
     this.setState({ messages: allMessagesSelected })
   }
 
+  messageStarred = async (id) => {
+    const starredMessages = this.state.messages.map(message => {
+      if (message.id === id) message.starred = !message.starred
+      return message
+    })
+    this.setState({ messages: starredMessages })
+  }
+
+  deleteMessage = (id) => {
+    console.log('delete button clicked')
+    const selectedMessages = this.state.messages.filter(message => {
+      return message.selected !== true
+    })
+
+    this.setState({ messages: selectedMessages })
+  }
+
   render() {
     console.log(this.state.messages)
     return (
-      <div className="container">
+      <div className="container" >
         <Toolbar
           selectAllButton={this.selectAllButton}
           markAsReadButtonClicked={this.markAsReadButtonClicked}
-          markAsUnreadButtonClicked={this.markAsUnreadButtonClicked} />
+          markAsUnreadButtonClicked={this.markAsUnreadButtonClicked}
+          deleteMessage={this.deleteMessage} />
         <MessageList
           messages={this.state.messages}
           messageRead={this.messageRead}
           messageSelected={this.messageSelected}
           messageStarred={this.messageStarred} />
-      </div>
+      </div >
     );
   }
 }
