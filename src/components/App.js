@@ -68,7 +68,6 @@ class App extends Component {
   }
 
   selectAllButton = () => {
-    console.log('clicked')
     const allMessagesSelected = this.state.messages.map(message => {
       message.selected = true
       return message
@@ -84,24 +83,42 @@ class App extends Component {
     this.setState({ messages: starredMessages })
   }
 
-  deleteMessage = (id) => {
-    console.log('delete button clicked')
-    const selectedMessages = this.state.messages.filter(message => {
+  deleteMessage = () => {
+    const messagesToKeep = this.state.messages.filter(message => {
       return message.selected !== true
     })
 
-    this.setState({ messages: selectedMessages })
+    this.setState({ messages: messagesToKeep })
   }
 
+  //onChange event listener for dropdown menu
+  //value of dropdown added to array of labels 
+
+  applyLabel = (e) => {
+    const selectedMessages = this.state.messages.filter(message => message.selected === true)
+    selectedMessages.forEach(message => this.messageSelected(message.labels = [...message.labels, e.target.value]))
+  }
+
+  removeLabel = (e) => {
+    console.log('remove label', e.target.value)
+    // const selectedMessages = this.state.messages.filter(message => message.selected === true)
+    // selectedMessages.forEach(message => this.messageSelected(message.labels = [...message.labels, e.target.value]))
+  }
+
+
+
+
   render() {
-    console.log(this.state.messages)
+
     return (
       <div className="container" >
         <Toolbar
           selectAllButton={this.selectAllButton}
           markAsReadButtonClicked={this.markAsReadButtonClicked}
           markAsUnreadButtonClicked={this.markAsUnreadButtonClicked}
-          deleteMessage={this.deleteMessage} />
+          deleteMessage={this.deleteMessage}
+          applyLabel={this.applyLabel}
+          removeLabel={this.removeLabel} />
         <MessageList
           messages={this.state.messages}
           messageRead={this.messageRead}
