@@ -17,11 +17,15 @@ class Toolbar extends Component {
                             onClick={this.props.selectAllButton} ></i>
                     </button>
 
-                    <button className="btn btn-default">
+                    <button
+                        className="btn btn-default"
+                        onClick={this.props.markAsReadButtonClicked}>
                         Mark As Read
                     </button>
 
-                    <button className="btn btn-default">
+                    <button
+                        className="btn btn-default"
+                        onClick={this.props.markAsUnreadButtonClicked}>
                         Mark As Unread
                     </button>
 

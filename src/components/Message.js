@@ -19,7 +19,8 @@ const Message = (props) => {
                             checked={props.message.selected
                                 ? "checked"
                                 : ""}
-                            onChange={() => props.messageSelected(props.message.id)} />
+                            onChange={() => props.messageSelected(props.message.id)}
+                            checked={(typeof props.message.selected !== "undefined") && props.message.selected === true ? "checked" : ""} />
                     </div>
                     <div className="col-xs-2">
                         <i className={`star fa 

@@ -27,7 +27,12 @@ class App extends Component {
       .catch(err => console.error(err))
   }
 
-  messageRead = (id) => {
+  markAsReadButtonClicked = () => {
+    const selectedMessages = this.state.messages.filter(message => message.selected === true)
+    selectedMessages.forEach(message => this.messageRead(message.id))
+  }
+
+  messageRead = async (id) => {
     const readMessages = this.state.messages.map(message => {
       if (message.id === id) message.read = true
       return message
@@ -35,15 +40,34 @@ class App extends Component {
     this.setState({ messages: readMessages })
   }
 
-  messageSelected = (id) => {
-    const selectedMessages = this.state.messages.map(message => {
-      if (message.id === id) message.selected = !message.selected
-      return message
-    })
-    this.setState({ messages: selectedMessages })
+  markAsUnreadButtonClicked = () => {
+    console.log('unreadbutton clicked')
+    const selectedMessages = this.state.messages.filter(message => message.selected === true)
+    selectedMessages.forEach(message => this.messageUnread(message.id))
   }
 
-  messageStarred = (id) => {
+  messageUnread = async (id) => {
+    const unreadMessages = this.state.messages.map(message => {
+      if (message.id === id) message.read = false
+      return message
+    })
+    this.setState({ messages: unreadMessages })
+  }
+
+  messageSelected = async (id) => {
+
+    const selectedMessages = this.state.messages.map(message => {
+      if (message.id === id) {
+        message.selected = !message.selected
+      }
+      return message
+    })
+    this.setState({
+      messages: selectedMessages
+    })
+  }
+
+  messageStarred = async (id) => {
     const starredMessages = this.state.messages.map(message => {
       if (message.id === id) message.starred = !message.starred
       return message
@@ -65,7 +89,9 @@ class App extends Component {
     return (
       <div className="container">
         <Toolbar
-          selectAllButton={this.selectAllButton} />
+          selectAllButton={this.selectAllButton}
+          markAsReadButtonClicked={this.markAsReadButtonClicked}
+          markAsUnreadButtonClicked={this.markAsUnreadButtonClicked} />
         <MessageList
           messages={this.state.messages}
           messageRead={this.messageRead}
