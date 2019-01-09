@@ -3,17 +3,24 @@ import '../App.css';
 
 class Toolbar extends Component {
     render() {
+        const selectedMessages = this.props.messages.filter(message => message.selected === true).length
+
         return (
             <div className="row toolbar">
                 <div className="col-md-12">
                     <p className="pull-right">
-                        <span className="badge badge">2</span>
+                        <span className="badge badge">{this.props.unreadCount()}</span>
                         unread messages
                     </p>
 
                     <button className="btn btn-default">
                         <i
-                            className={true ? "fa fa-check-square-o" : "fa fa-minus-square-o"}
+                            className={selectedMessages === this.props.messages.length
+                                ? "fa fa-check-square-o"
+                                : selectedMessages === 0
+                                    ? "fa fa-square-o"
+                                    : "fa fa-minus-square-o"}
+
                             onClick={this.props.selectAllButton} ></i>
                     </button>
 
@@ -41,10 +48,10 @@ class Toolbar extends Component {
                     <select
                         className="form-control label-select"
                         onChange={this.props.removeLabel} >
-                            <option>Remove label</option>
-                            <option value="dev">dev</option>
-                            <option value="personal">personal</option>
-                            <option value="gschool">gschool</option>
+                        <option>Remove label</option>
+                        <option value="dev">dev</option>
+                        <option value="personal">personal</option>
+                        <option value="gschool">gschool</option>
                     </select>
 
                     <button className="btn btn-default">

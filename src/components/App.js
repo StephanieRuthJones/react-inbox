@@ -27,6 +27,28 @@ class App extends Component {
       .catch(err => console.error(err))
   }
 
+  //patch request here
+  updates = async (ids, command, prop, value) => {
+    let message = {
+      messageIds: ids,
+      command: command,
+      [prop]: value
+    }
+    await fetch(url, {
+      method: "PATCH",
+      body: JSON.stringify(message),
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      }
+    })
+      .then(res => res.json())
+      .then(messages => {
+        this.setState({ messages: messages })
+        return messages
+      })
+  }
+
   markAsReadButtonClicked = () => {
     const selectedMessages = this.state.messages.filter(message => message.selected === true)
     selectedMessages.forEach(message => this.messageRead(message.id))
@@ -38,24 +60,57 @@ class App extends Component {
       return message
     })
     this.setState({ messages: readMessages })
+    this.updates([id], "read", "read", true)
   }
-
-  markAsUnreadButtonClicked = () => {
-    console.log('unreadbutton clicked')
-    const selectedMessages = this.state.messages.filter(message => message.selected === true)
-    selectedMessages.forEach(message => this.messageUnread(message.id))
-  }
-
+  //ids need to come in as array either from .map or filter.. or put []
   messageUnread = async (id) => {
-    const unreadMessages = this.state.messages.map(message => {
-      if (message.id === id) message.read = false
+    const unreadMessages = this.state.messages.filter(message => message.selected === true).map(message => {
+      message.read = false
       return message
     })
+    const ids = unreadMessages.map(message => message.id)
+
     this.setState({ messages: unreadMessages })
+    this.updates(ids, "read", "read", false)
+  }
+
+  selectAllButton = () => {
+    const allMessagesSelected = this.state.messages.filter(message => message.selected === true)
+    const select = this.state.messages.map(message => {
+      allMessagesSelected.length === this.state.messages.length
+        ? message.selected = false
+        : message.selected = true
+      return message
+    })
+
+    this.setState({ messages: select })
+
+  }
+
+  messageStarred = async (id) => {
+    const starredMessages = this.state.messages.map(message => {
+      if (message.id === id) message.starred = !message.starred
+      return message
+    })
+    this.setState({ messages: starredMessages })
+    this.updates([id], "star", "starred")
+  }
+
+  deleteMessage = () => {
+    const messagesToKeep = this.state.messages.filter(message => {
+      if (!message.selected) {
+        return message
+      }
+
+    })
+
+    const ids = messagesToKeep.map(message => message.id)
+
+    this.setState({ messages: messagesToKeep })
+    this.updates(ids, "delete", "delete")
   }
 
   messageSelected = async (id) => {
-
     const selectedMessages = this.state.messages.map(message => {
       if (message.id === id) {
         message.selected = !message.selected
@@ -67,58 +122,51 @@ class App extends Component {
     })
   }
 
-  selectAllButton = () => {
-    const allMessagesSelected = this.state.messages.map(message => {
-      message.selected = true
-      return message
-    })
-    this.setState({ messages: allMessagesSelected })
-  }
-
-  messageStarred = async (id) => {
-    const starredMessages = this.state.messages.map(message => {
-      if (message.id === id) message.starred = !message.starred
-      return message
-    })
-    this.setState({ messages: starredMessages })
-  }
-
-  deleteMessage = () => {
-    const messagesToKeep = this.state.messages.filter(message => {
-      return message.selected !== true
-    })
-
-    this.setState({ messages: messagesToKeep })
-  }
-
-  //onChange event listener for dropdown menu
-  //value of dropdown added to array of labels 
-
   applyLabel = (e) => {
-    const selectedMessages = this.state.messages.filter(message => message.selected === true)
-    selectedMessages.forEach(message => this.messageSelected(message.labels = [...message.labels, e.target.value]))
+    //filter to find message then map to find id of each message
+    const ids = []
+    const label = this.state.messages.map((message) => {
+      if (message.selected === true) {
+        if (!message.labels.includes(e.target.value)) {
+          message.labels = [...message.labels, e.target.value]
+          ids.push(message.id)
+        }
+      }
+      return message
+    })
+    this.setState({
+      messages: label
+    })
+
+    this.updates(ids, "addLabel", "label", e.target.value)
   }
 
   removeLabel = (e) => {
-    console.log('remove label', e.target.value)
-    // const selectedMessages = this.state.messages.filter(message => message.selected === true)
-    // selectedMessages.forEach(message => this.messageSelected(message.labels = [...message.labels, e.target.value]))
+    const selectedMessages = this.state.messages.filter(message => message.selected)
+    const ids = selectedMessages.map(message => message.id)
+
+    this.updates(ids, "removeLabel", "label", e.target.value)
   }
 
-
-
+  unreadCount = () => {
+    const unreadMessages = this.state.messages.filter(message => message.read === false)
+    const numberUnread = unreadMessages.length
+    return numberUnread
+  }
 
   render() {
 
     return (
       <div className="container" >
         <Toolbar
+          messages={this.state.messages}
           selectAllButton={this.selectAllButton}
           markAsReadButtonClicked={this.markAsReadButtonClicked}
           markAsUnreadButtonClicked={this.markAsUnreadButtonClicked}
           deleteMessage={this.deleteMessage}
           applyLabel={this.applyLabel}
-          removeLabel={this.removeLabel} />
+          removeLabel={this.removeLabel}
+          unreadCount={this.unreadCount} />
         <MessageList
           messages={this.state.messages}
           messageRead={this.messageRead}
