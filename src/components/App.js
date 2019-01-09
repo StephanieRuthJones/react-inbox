@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Toolbar from './Toolbar'
+import ComposeMessage from './ComposeMessage'
 import MessageList from './MessageList'
 import '../App.css';
 const url = 'http://localhost:8082/api/messages'
@@ -9,7 +10,8 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      messages: []
+      messages: [],
+      composeMessage: false
     }
   }
 
@@ -98,7 +100,7 @@ class App extends Component {
 
   deleteMessage = () => {
     const messagesToKeep = this.state.messages.filter(message => {
-      if (!message.selected) {
+      if (message.selected) {
         return message
       }
 
@@ -154,12 +156,31 @@ class App extends Component {
     return numberUnread
   }
 
+  composeMessageButton = () => {
+    console.log('compose button clicked')
+    this.setState({
+      composeMessage: !this.state.composeMessage
+    })
+  }
+
+  sendMessage = (e) => {
+    e.preventDefault()
+    console.log('send button clicked')
+    // this.state.messages.push(newMessage)
+  }
+
+  subject = (e) => {
+    console.log('subject', e.target.value)
+
+  }
+
   render() {
 
     return (
       <div className="container" >
         <Toolbar
           messages={this.state.messages}
+          composeMessageButton={this.composeMessageButton}
           selectAllButton={this.selectAllButton}
           markAsReadButtonClicked={this.markAsReadButtonClicked}
           markAsUnreadButtonClicked={this.markAsUnreadButtonClicked}
@@ -167,6 +188,9 @@ class App extends Component {
           applyLabel={this.applyLabel}
           removeLabel={this.removeLabel}
           unreadCount={this.unreadCount} />
+
+        {this.state.composeMessage === true ? <ComposeMessage sendMessage={this.sendMessage} subject={this.subject} /> : null}
+
         <MessageList
           messages={this.state.messages}
           messageRead={this.messageRead}

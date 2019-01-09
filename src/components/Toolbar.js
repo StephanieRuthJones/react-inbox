@@ -14,7 +14,8 @@ class Toolbar extends Component {
                     </p>
 
                     <a className="btn btn-danger">
-                        <i className="fa fa-plus"></i>
+                        <i className="fa fa-plus"
+                        onClick={this.props.composeMessageButton}></i>
                     </a>
 
                     <button className="btn btn-default">
