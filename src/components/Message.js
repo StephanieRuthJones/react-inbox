@@ -32,8 +32,8 @@ const Message = (props) => {
                 </div>
             </div>
             <div
-                onClick={() => props.messageRead(props.message.id)}
-                className="col-xs-11">
+                className="col-xs-11"
+                onClick={() =>  props.messageRead(props.message.id)}>
                 <span
                     className={props.message.labels.includes("dev")
                         ? "label label-warning"
@@ -49,11 +49,16 @@ const Message = (props) => {
                 <a
 
                     href="/#"
+
                 >
                     {props.message.subject}
-                    {/* {props.message.body} */}
 
                 </a>
+                {/* <div className="row message-body">
+                    <div className={`col-xs-11 col-xs-offset-1 ${props.message.read ? "" : "hidden"}`}>
+                        {props.message.body}
+                    </div>
+                </div> */}
             </div>
         </div >
     )

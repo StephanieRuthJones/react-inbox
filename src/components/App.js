@@ -22,7 +22,6 @@ class App extends Component {
       .then(res => res.json())
       .then(messages => {
         this.setState({ messages: messages })
-        return messages
       })
   }
 
@@ -31,7 +30,6 @@ class App extends Component {
       .catch(err => console.error(err))
   }
 
-  //patch request here
   updates = async (ids, command, prop, value) => {
     let message = {
       messageIds: ids,
@@ -48,6 +46,7 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(messages => {
+        console.log('patch', messages)
         this.setState({ messages: messages })
         return messages
       })
@@ -67,14 +66,17 @@ class App extends Component {
     this.updates([id], "read", "read", true)
   }
   //ids need to come in as array either from .map or filter.. or put []
-  messageUnread = async (id) => {
-    const unreadMessages = this.state.messages.filter(message => message.selected === true).map(message => {
-      message.read = false
+  markAsUnread = async (id) => {
+    const ids = []
+    const updatedMessage = this.state.messages.map(message => {
+      if (message.selected) {
+        message.read = false
+        ids.push(message.id)
+      }
       return message
     })
-    const ids = unreadMessages.map(message => message.id)
 
-    this.setState({ messages: unreadMessages })
+    this.setState({ messages: updatedMessage })
     this.updates(ids, "read", "read", false)
   }
 
@@ -127,7 +129,6 @@ class App extends Component {
   }
 
   applyLabel = (e) => {
-    //filter to find message then map to find id of each message
     const ids = []
     const label = this.state.messages.map((message) => {
       if (message.selected === true) {
@@ -159,7 +160,6 @@ class App extends Component {
   }
 
   composeMessageButton = () => {
-    console.log('compose button clicked')
     this.setState({
       composeMessage: !this.state.composeMessage
     })
@@ -181,7 +181,6 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(message => {
-        console.log(message)
         this.setState({ messages: [...this.state.messages, message] })
         return message
       })
@@ -203,7 +202,7 @@ class App extends Component {
           composeMessageButton={this.composeMessageButton}
           selectAllButton={this.selectAllButton}
           markAsReadButtonClicked={this.markAsReadButtonClicked}
-          markAsUnreadButtonClicked={this.markAsUnreadButtonClicked}
+          markAsUnread={this.markAsUnread}
           deleteMessage={this.deleteMessage}
           applyLabel={this.applyLabel}
           removeLabel={this.removeLabel}

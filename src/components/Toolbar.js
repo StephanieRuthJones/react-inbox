@@ -15,7 +15,7 @@ class Toolbar extends Component {
 
                     <a className="btn btn-danger">
                         <i className="fa fa-plus"
-                        onClick={this.props.composeMessageButton}></i>
+                            onClick={this.props.composeMessageButton}></i>
                     </a>
 
                     <button className="btn btn-default">
@@ -26,24 +26,34 @@ class Toolbar extends Component {
                                     ? "fa fa-square-o"
                                     : "fa fa-minus-square-o"}
 
+
                             onClick={this.props.selectAllButton} ></i>
                     </button>
 
                     <button
                         className="btn btn-default"
-                        onClick={this.props.markAsReadButtonClicked}>
+                        onClick={this.props.markAsReadButtonClicked}
+                        disabled={selectedMessages === 0
+                            ? "disabled"
+                            : ""}>
                         Mark As Read
                     </button>
 
                     <button
                         className="btn btn-default"
-                        onClick={this.props.markAsUnreadButtonClicked}>
+                        onClick={this.props.markAsUnread}
+                        disabled={selectedMessages === 0
+                            ? "disabled"
+                            : ""}>
                         Mark As Unread
                     </button>
 
                     <select
                         className="form-control label-select"
-                        onChange={this.props.applyLabel}>
+                        onChange={this.props.applyLabel}
+                        disabled={selectedMessages === 0
+                            ? "disabled"
+                            : ""}>
                         <option>Apply label</option>
                         <option value="dev">dev</option>
                         <option value="personal">personal</option>
@@ -52,7 +62,10 @@ class Toolbar extends Component {
 
                     <select
                         className="form-control label-select"
-                        onChange={this.props.removeLabel} >
+                        onChange={this.props.removeLabel}
+                        disabled={selectedMessages === 0
+                            ? "disabled"
+                            : ""}>
                         <option>Remove label</option>
                         <option value="dev">dev</option>
                         <option value="personal">personal</option>
@@ -62,7 +75,10 @@ class Toolbar extends Component {
                     <button className="btn btn-default">
                         <i
                             className="fa fa-trash-o"
-                            onClick={this.props.deleteMessage}></i>
+                            onClick={this.props.deleteMessage}
+                            disabled={selectedMessages === 0
+                            ? "disabled"
+                            : ""}></i>
                     </button>
                 </div>
             </div>

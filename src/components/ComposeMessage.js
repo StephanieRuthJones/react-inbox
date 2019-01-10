@@ -35,7 +35,11 @@ const ComposeMessage = (props) => {
             </div>
             <div className="form-group">
                 <div className="col-sm-8 col-sm-offset-2">
-                    <input type="submit" value="Send" className="btn btn-primary" onClick={(e) => props.sendMessage(e)} />
+                    <input
+                        type="submit"
+                        value="Send"
+                        className="btn btn-primary"
+                        onClick={(e) => props.sendMessage(e)} />
                 </div>
             </div>
         </form>
