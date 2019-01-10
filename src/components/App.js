@@ -11,7 +11,9 @@ class App extends Component {
     super(props)
     this.state = {
       messages: [],
-      composeMessage: false
+      composeMessage: false,
+      subject: '',
+      body: ''
     }
   }
 
@@ -165,17 +167,35 @@ class App extends Component {
 
   sendMessage = (e) => {
     e.preventDefault()
-    console.log('send button clicked')
-    // this.state.messages.push(newMessage)
+    var newMessage = {
+      subject: this.state.subject,
+      body: this.state.body
+    }
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify(newMessage),
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      }
+    })
+      .then(res => res.json())
+      .then(message => {
+        console.log(message)
+        this.setState({ messages: [...this.state.messages, message] })
+        return message
+      })
   }
 
-  subject = (e) => {
-    console.log('subject', e.target.value)
+  messageForm = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value
+    })
 
   }
 
   render() {
-
+    console.log(this.state.messages)
     return (
       <div className="container" >
         <Toolbar
@@ -189,7 +209,7 @@ class App extends Component {
           removeLabel={this.removeLabel}
           unreadCount={this.unreadCount} />
 
-        {this.state.composeMessage === true ? <ComposeMessage sendMessage={this.sendMessage} subject={this.subject} /> : null}
+        {this.state.composeMessage === true ? <ComposeMessage sendMessage={this.sendMessage} messageForm={this.messageForm} /> : null}
 
         <MessageList
           messages={this.state.messages}
