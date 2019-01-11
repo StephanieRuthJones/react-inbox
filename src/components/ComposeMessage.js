@@ -4,7 +4,8 @@ import '../App.css'
 const ComposeMessage = (props) => {
     return (
 
-        <form className="form-horizontal well">
+        <form className="form-horizontal well"
+            onSubmit={(e) => props.sendMessage(e)} >
             <div className="form-group">
                 <div className="col-sm-8 col-sm-offset-2">
                     <h4>Compose Message</h4>
@@ -39,7 +40,7 @@ const ComposeMessage = (props) => {
                         type="submit"
                         value="Send"
                         className="btn btn-primary"
-                        onClick={(e) => props.sendMessage(e)} />
+                    />
                 </div>
             </div>
         </form>

@@ -21,7 +21,11 @@ class App extends Component {
     return fetch(url)
       .then(res => res.json())
       .then(messages => {
-        this.setState({ messages: messages })
+        const newState = messages.map(message => {
+          message.open = false
+          return message
+        })
+        this.setState({ messages: newState })
       })
   }
 
@@ -44,29 +48,31 @@ class App extends Component {
         "Accept": "application/json",
       }
     })
-      .then(res => res.json())
-      .then(messages => {
-        console.log('patch', messages)
-        this.setState({ messages: messages })
-        return messages
-      })
   }
 
   markAsReadButtonClicked = () => {
-    const selectedMessages = this.state.messages.filter(message => message.selected === true)
-    selectedMessages.forEach(message => this.messageRead(message.id))
+    const selectedMessages = this.state.messages.map(message => {
+      if (message.selected === true) {
+        message.read = true
+      } return message
+    })
+    this.setState({ messages: selectedMessages })
   }
 
-  messageRead = async (id) => {
+  messageRead = (id) => {
+    console.log("message read")
     const readMessages = this.state.messages.map(message => {
-      if (message.id === id) message.read = true
+      if (message.id === id) {
+        message.read = true
+        message.open = !message.open
+      }
       return message
     })
     this.setState({ messages: readMessages })
     this.updates([id], "read", "read", true)
   }
   //ids need to come in as array either from .map or filter.. or put []
-  markAsUnread = async (id) => {
+  markAsUnread = (id) => {
     const ids = []
     const updatedMessage = this.state.messages.map(message => {
       if (message.selected) {
@@ -104,7 +110,7 @@ class App extends Component {
 
   deleteMessage = () => {
     const messagesToKeep = this.state.messages.filter(message => {
-      if (message.selected) {
+      if (!message.selected === true) {
         return message
       }
 
@@ -147,9 +153,16 @@ class App extends Component {
   }
 
   removeLabel = (e) => {
-    const selectedMessages = this.state.messages.filter(message => message.selected)
+    const selectedMessages = this.state.messages.map(message => {
+      if (message.selected === true) {
+        message.labels = message.labels.filter(label => label !== e.target.value)
+      }
+      return message
+    })
     const ids = selectedMessages.map(message => message.id)
 
+
+    this.setState({ messages: selectedMessages })
     this.updates(ids, "removeLabel", "label", e.target.value)
   }
 
@@ -181,7 +194,10 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(message => {
-        this.setState({ messages: [...this.state.messages, message] })
+        this.setState({
+          messages: [...this.state.messages, message],
+          composeMessage: !this.state.composeMessage
+        })
         return message
       })
   }
