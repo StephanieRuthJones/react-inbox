@@ -71,7 +71,7 @@ class App extends Component {
     this.setState({ messages: readMessages })
     this.updates([id], "read", "read", true)
   }
-  //ids need to come in as array either from .map or filter.. or put []
+
   markAsUnread = (id) => {
     const ids = []
     const updatedMessage = this.state.messages.map(message => {
@@ -115,7 +115,6 @@ class App extends Component {
       }
 
     })
-
     const ids = messagesToKeep.map(message => message.id)
 
     this.setState({ messages: messagesToKeep })
