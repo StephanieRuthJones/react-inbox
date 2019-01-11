@@ -109,12 +109,7 @@ class App extends Component {
   }
 
   deleteMessage = () => {
-    const messagesToKeep = this.state.messages.filter(message => {
-      if (!message.selected === true) {
-        return message
-      }
-
-    })
+    const messagesToKeep = this.state.messages.filter(message => !message.selected === true)
     const ids = messagesToKeep.map(message => message.id)
 
     this.setState({ messages: messagesToKeep })
